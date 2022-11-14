@@ -1,11 +1,14 @@
 package com.unab.apipartidosg30.models.respuestas;
 
+import java.util.List;
+
 public class UsuarioDataResModel {
 
     private String idUsuario;
     private String nombre;
     private String email;
     private String username;
+    private List<PartidoDataResModel> partidoDataResModelList;
 
     public String getIdUsuario() {
         return this.idUsuario;
@@ -37,6 +40,14 @@ public class UsuarioDataResModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<PartidoDataResModel> getPartidoDataResModelList() {
+        return this.partidoDataResModelList;
+    }
+
+    public void setPartidoDataResModelList(List<PartidoDataResModel> partidoDataResModelList) {
+        this.partidoDataResModelList = partidoDataResModelList;
     }
 
 }

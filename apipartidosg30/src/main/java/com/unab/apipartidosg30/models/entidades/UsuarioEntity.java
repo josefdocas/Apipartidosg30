@@ -1,30 +1,39 @@
 package com.unab.apipartidosg30.models.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
+import javax.persistence.Index;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity(name="usuario")
-
+@Table(indexes = {
+    @Index(columnList = "idUsuario", name = "index_idUsuario", unique = true),
+    @Index(columnList = "email", name = "index_idemail", unique = true),
+    @Index(columnList = "username", name = "index_idusername", unique = true)
+})
 public class UsuarioEntity implements Serializable{
 
     private static final long serialVersionUID=1L;
     
     @Id
     @GeneratedValue
-
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String idUsuario;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length =  50)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String email;
 
     @Column(nullable = false)
@@ -32,6 +41,9 @@ public class UsuarioEntity implements Serializable{
 
     @Column(nullable = false)
     private String passwordEncriptada;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioEntity")
+    private List<PartidoEntity> partidoEntityList= new ArrayList<>();
 
     public long getId() {
         return this.id;
@@ -81,6 +93,13 @@ public class UsuarioEntity implements Serializable{
         this.passwordEncriptada = passwordEncriptada;
     }
 
+    public List<PartidoEntity> getPartidoEntityList() {
+        return this.partidoEntityList;
+    }
+
+    public void setPartidoEntityList(List<PartidoEntity> partidoEntityList) {
+        this.partidoEntityList = partidoEntityList;
+    }
 }
 
 

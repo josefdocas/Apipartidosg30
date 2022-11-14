@@ -1,6 +1,7 @@
 package com.unab.apipartidosg30.models.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UsuarioDto implements Serializable{
 
@@ -13,7 +14,7 @@ public class UsuarioDto implements Serializable{
     private String username;
     private String password;
     private String passwordEncriptada;
-
+    private List<PartidoDto> partidoDtoList;
 
     public long getId() {
         return this.id;
@@ -71,4 +72,11 @@ public class UsuarioDto implements Serializable{
         this.passwordEncriptada = passwordEncriptada;
     }
 
+    public List<PartidoDto> getPartidoDtoList() {
+        return this.partidoDtoList;
+    }
+
+    public void setPartidoDtoList(List<PartidoDto> partidoDtoList) {
+        this.partidoDtoList = partidoDtoList;
+    }
 }

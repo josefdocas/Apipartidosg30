@@ -1,5 +1,7 @@
 package com.unab.apipartidosg30.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -8,8 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.unab.apipartidosg30.models.dto.PartidoDto;
 import com.unab.apipartidosg30.models.dto.UsuarioDto;
+import com.unab.apipartidosg30.models.entidades.PartidoEntity;
 import com.unab.apipartidosg30.models.entidades.UsuarioEntity;
+import com.unab.apipartidosg30.repositorios.IPartidoRepository;
 import com.unab.apipartidosg30.repositorios.IUsuarioRepository;
 
 @Service
@@ -23,6 +28,9 @@ public class UsuarioService implements IUsuarioService{
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    IPartidoRepository iPartidoRepository;
 
     @Override
     public UsuarioDto crearUsuario(UsuarioDto UsuarioDto) {
@@ -58,6 +66,23 @@ public class UsuarioService implements IUsuarioService{
         UsuarioDto usuarioDto= modelMapper.map(usuarioEntity, UsuarioDto.class);
 
         return usuarioDto;
+    }
+
+    @Override
+    public List<PartidoDto> leerMispartidos(String username) {
+        
+        UsuarioEntity usuarioEntity= iUsuarioRepository.findByUsername(username);
+        
+        List<PartidoEntity> partidoEntityList= iPartidoRepository.getByUsuarioEntityIdOrderByCreadoDesc(usuarioEntity.getId());
+
+        List<PartidoDto> partidoDtoList= new ArrayList<>();
+
+        for (PartidoEntity partidoEntity : partidoEntityList) {
+            PartidoDto partidoDto= modelMapper.map(partidoEntity, PartidoDto.class);
+            partidoDtoList.add(partidoDto);
+        }
+
+        return partidoDtoList;
     }
     
 }
