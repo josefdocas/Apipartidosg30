@@ -1,5 +1,7 @@
 package com.unab.apipartidosg30.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -52,6 +54,66 @@ public class PartidoService implements IPartidoService{
         PartidoDto partidoDtoCreado= modelMapper.map(partidoEntityCreado, PartidoDto.class);
         
         return partidoDtoCreado;
+    }
+
+    @Override
+    public List<PartidoDto> leePartidos() {
+
+        List<PartidoEntity> partidoEntityList= iPartidoRepository.partidosCreados();
+        
+        List<PartidoDto> partidoDtoList= new ArrayList<>();
+
+        for(PartidoEntity partidoEntity : partidoEntityList) {
+            PartidoDto partidoDto= modelMapper.map(partidoEntity, PartidoDto.class);
+            partidoDtoList.add(partidoDto);
+        }
+
+        return partidoDtoList;
+    }
+
+    @Override
+    public PartidoDto detallePartido(String idPartido) {
+        
+        PartidoEntity partidoEntity= iPartidoRepository.findByIdPartido(idPartido);
+        
+        PartidoDto partidoDto= modelMapper.map(partidoEntity, PartidoDto.class);
+        
+        return partidoDto;
+
+    }
+
+    @Override
+    public PartidoDto actualizarPartido(String idPartido, PartidoDto partidoDto) {
+
+        PartidoEntity partidoEntity= iPartidoRepository.findByIdPartido(idPartido);
+
+        UsuarioEntity usuarioEntity= iUsuarioRepository.findByUsername(partidoDto.getUsername());
+
+        if(partidoEntity.getUsuarioEntity().getId()!= usuarioEntity.getId()){
+            throw new RuntimeException("No se puede realizar esta acción");
+        }
+
+        partidoEntity.setGolesLocal(partidoDto.getGolesLocal());
+        partidoEntity.setGolesVisitante(partidoDto.getGolesVisitante());
+
+        PartidoEntity partidoEntityActualizado= iPartidoRepository.save(partidoEntity);
+
+        PartidoDto partidoDtoActualizado= modelMapper.map(partidoEntityActualizado, PartidoDto.class);
+
+        return partidoDtoActualizado;
+    }
+
+    @Override
+    public void eliminarPartido(String idPartido, long usuarioEntityId) {
+      
+        PartidoEntity partidoEntity= iPartidoRepository.findByIdPartido(idPartido);
+
+        if(partidoEntity.getUsuarioEntity().getId()!= usuarioEntityId){
+            throw new RuntimeException("No se puede realizar esta acción");
+        }
+
+        iPartidoRepository.delete(partidoEntity);
+        
     }
     
 }
