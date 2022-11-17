@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,7 @@ public class UsuarioService implements IUsuarioService{
         return usuarioDtoCreado;
     }
 
+
     @Override
     public UsuarioDto leerUsuario(String username) {
         
@@ -67,6 +70,7 @@ public class UsuarioService implements IUsuarioService{
 
         return usuarioDto;
     }
+
 
     @Override
     public List<PartidoDto> leerMispartidos(String username) {
@@ -83,6 +87,21 @@ public class UsuarioService implements IUsuarioService{
         }
 
         return partidoDtoList;
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    
+        UsuarioEntity usuarioEntity= iUsuarioRepository.findByUsername(username);
+
+        if(usuarioEntity==null){
+            throw new UsernameNotFoundException(username);
+        }
+
+        User usuario= new User(usuarioEntity.getUsername(), usuarioEntity.getPasswordEncriptada(), new ArrayList<>());
+
+        return usuario;
     }
     
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import com.unab.apipartidosg30.models.peticiones.UsuarioCrearReqModel;
 import com.unab.apipartidosg30.models.respuestas.PartidoDataResModel;
 import com.unab.apipartidosg30.models.respuestas.UsuarioDataResModel;
 import com.unab.apipartidosg30.services.IUsuarioService;
+
 
 @RestController
 @RequestMapping("/usuario")
@@ -42,10 +45,13 @@ public class UsuarioController {
         return usuarioDataRestModel;
     }
 
+
     @GetMapping
     public UsuarioDataResModel leerUsuario(){
 
-        String username= "krodri";
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+
+        String username= authentication.getPrincipal().toString();
 
         UsuarioDto usuarioDto= iUsuarioService.leerUsuario(username);
 
@@ -57,7 +63,9 @@ public class UsuarioController {
     @GetMapping(path = "/mispartidos")
     public List<PartidoDataResModel> leerMisPartidos() {
         
-        String username= "krodri";
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+
+        String username= authentication.getPrincipal().toString();
 
         List<PartidoDto> partidoDtoList= iUsuarioService.leerMispartidos(username);
 
@@ -73,5 +81,6 @@ public class UsuarioController {
 
         return partidoDataResModelList;
     }
+
 }
     

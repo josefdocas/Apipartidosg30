@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +37,14 @@ public class PartidoController {
 
     @Autowired
     IUsuarioService iUsuarioService;
+    
 
     @PostMapping
     public PartidoDataResModel crearPartido(@RequestBody PartidoCrearReqModel partidoCrearReqModel){
 
-        String username= "krodri";
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+
+        String username= authentication.getPrincipal().toString();
 
         PartidoDto partidoDto= modelMapper.map(partidoCrearReqModel, PartidoDto.class);
         partidoDto.setUsername(username);
@@ -79,7 +84,9 @@ public class PartidoController {
     public PartidoDataResModel actualizarPartido(@PathVariable String id, 
                                                     @RequestBody PartidoActualizarReqModel partidoActualizarReqModel){
                                                         
-    String username ="krodri";
+    Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+
+    String username= authentication.getPrincipal().toString();
 
     PartidoDto partidoDto= modelMapper.map(partidoActualizarReqModel, PartidoDto.class);
     partidoDto.setUsername(username);
@@ -95,7 +102,9 @@ public class PartidoController {
     @DeleteMapping(path = "/{id}")
     public MensajeResModel eliminarPartido(@PathVariable String id){
 
-        String username= "krodri";
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+
+        String username= authentication.getPrincipal().toString();
 
         UsuarioDto usuarioDto= iUsuarioService.leerUsuario(username);
 
