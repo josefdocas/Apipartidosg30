@@ -1,0 +1,22 @@
+.mi-badge-jugado{
+    padding: 8px !important;
+    background-color: coral;
+}
+
+.mi-badge-pendiente{
+    padding: 8px !important;
+    color: white;
+    background-color: darkgray;
+}
+
+.mi-badge-marcador{
+    padding: 8px !important;
+    background-color: coral;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.mi-card{
+    display: flex;
+    justify-content: space-between;
+}
