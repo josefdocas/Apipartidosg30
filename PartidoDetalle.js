@@ -1,8 +1,8 @@
 import axios from "axios"
+import moment from "moment"
 import { useEffect, useState } from "react"
 import { Badge, Card, Col, Container, Row } from "react-bootstrap"
 import { useNavigate, useParams } from "react-router-dom"
-import { PartidoCard } from "../components/PartidoCard"
 import { PARTIDODETALLE_GET_ENDPOINT } from "../connections/endpoints"
 
 const PartidoDetalle=()=>{
@@ -18,7 +18,6 @@ const PartidoDetalle=()=>{
             setPartido(respuesta.data)
         })
         .catch(err=>{
-            console.error(err)
             navegar(-1)
         })
     }, [id, navegar])
@@ -44,10 +43,10 @@ const PartidoDetalle=()=>{
                                 <Badge className='mi-badge-marcador'>{partido.golesVisitante}</Badge>
                                 Visitante
                             </p>
-                                Fecha: {partido.fecha} 
+                            Fecha: {moment (partido.fecha).format('D[/]MM[/]YYYY')} 
                         </Card.Body>
                         <Card.Footer>
-                        Creado por: {partido.usuarioEntity.nombre}, el dia {partido.creado} 
+                        Creado por: {partido.usuarioEntity.nombre}, el dia {moment(partido.creado).fromNow()} 
                         </Card.Footer>
                     </Card> 
                     )} 

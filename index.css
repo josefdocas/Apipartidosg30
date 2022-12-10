@@ -1,12 +1,16 @@
 .mi-badge-jugado{
     padding: 8px !important;
     background-color: coral;
+    width: auto;
+    height: 30px;
 }
 
 .mi-badge-pendiente{
     padding: 8px !important;
     color: white;
     background-color: darkgray;
+    width: auto;
+    height: 30px;
 }
 
 .mi-badge-marcador{
